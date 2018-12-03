@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>ZIM Frame - Fit Template</title>
+
+<!-- Welcome to ZIM at https://zimjs.com - Code Creativity!              	        -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
+<!-- Founded by Inventor Dan Zen - http://danzen.com - Canadian New Media Award Winner 	-->
+<!-- ZIM is free to use. You can donate to help improve ZIM at http://zimjs.com/donate 	-->
+
+<script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
+<script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+<script>
+
+// SCALING OPTIONS
+// scaling can have values as follows with full being the default
+// "fit"	sets canvas and stage to dimensions and scales to fit inside window size
+// "outside"	sets canvas and stage to dimensions and scales to fit outside window size
+// "full"	sets stage to window size with no scaling
+// "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+
+var scaling = "fit"; // this will resize to fit inside the screen dimensions
+var width = 1024;
+var height = 768;
+var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
+var outerColor = dark;
+var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","gradient.png","stars.png","second.png","star.png"];
+var path = "assets/"
+var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
+frame.on("ready", function() {
+    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
+    var stage = frame.stage;
+    var stageW = frame.width;
+    var stageH = frame.height;
+
+frame.asset("background.png").scaleTo(stage,100).addTo();
+
+var bottomClouds = frame.asset("bottom-clouds.png").center();
+var scrollerClouds = new Scroller(bottomClouds,.45);
+
+var stars = frame.asset("stars.png").center();
+var scrollerStars = new Scroller(stars,.25);
+
+var beam = frame.asset("beam.png").center();
+var scrollerBeam = new Scroller(beam,.95);
+
+var unicont = new Container().center().drag();
+
+var star = frame.asset("star.png")
+
+var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont);
+//ask dan how to stop the emitter from lagging behind when u click and drag the unicorn
+var emit =  new Emitter({
+   obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
+   random:{color:[blue, moon, pink,yellow]},
+  angle:{min:10, max:80},
+  force:1
+}).center(unicorn).pos(440,410).rot(60)
+.addTo(unicont).bot().sca(1.75);
+
+var mcontroller = new MotionController({
+target:unicont,
+type:"mousemove",
+speed:100,
+damp:.2,
+minPercentSpeed:-6000,
+maxPercentSpeed:6000
+});
+
+// var emitter = new Emitter().center();
+
+
+
+
+
+    stage.update(); // this is needed to show any changes
+
+}); // end of ready
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
