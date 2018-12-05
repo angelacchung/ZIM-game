@@ -45,23 +45,23 @@ frame.on("ready", function() {
 
     var playBtn = new Button({
       width: 200,
-      height: 100,
+      height: 75,
       label: "PLAY",
       target: "rainbow.html",
       backgroundColor:pink,
       rollBackgroundColor: purple,
       color: moon
-    }).pos(500, 500).tap(function(){zgo("rainbow.html");});
+    }).pos(425, 500).tap(function(){zgo("rainbow.html");});
 
-    var howBtn = new Button(
+    var howBtn = new Button({
       width: 200,
-      height: 100,
+      height: 75,
       label: "CONTROLS",
       target: "controls.html",
       backgroundColor:pink,
       rollBackgroundColor: purple,
       color: moon
-    }).pos(500, 600).tap(function(){zgo("controls.html");});
+    }).pos(425, 600).tap(function(){zgo("controls.html");});
 
 
     stage.update(); // this is needed to show any changes
