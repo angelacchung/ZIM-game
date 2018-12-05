@@ -41,27 +41,7 @@ frame.on("ready", function() {
 
     var container = new Container().center();
 
-    var unicorn = frame.asset("first.png").sca(.5).centerReg(container);
-
-    var playBtn = new Button({
-      width: 200,
-      height: 100,
-      label: "PLAY",
-      target: "rainbow.html",
-      backgroundColor:pink,
-      rollBackgroundColor: purple,
-      color: moon
-    }).pos(500, 500).tap(function(){zgo("rainbow.html");});
-
-    var howBtn = new Button(
-      width: 200,
-      height: 100,
-      label: "CONTROLS",
-      target: "controls.html",
-      backgroundColor:pink,
-      rollBackgroundColor: purple,
-      color: moon
-    }).pos(500, 600).tap(function(){zgo("controls.html");});
+//control instructions go here.
 
 
     stage.update(); // this is needed to show any changes
