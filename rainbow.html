@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Rainbow Unicorn Game</title>
+
+<script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
+<script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
+
+<script>
+
+var scaling = "fit";
+var width = 1024;
+var height = 768;
+var color = light;
+var outerColor = dark;
+var assets = [
+    "background.png",
+    "beam.png",
+    "bottom-clouds.png",
+    "first.png",
+    "second.png",
+    "star.png",
+    "stars.png"];
+var path= "assets/";
+
+var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter({backgroundColor: blue, corner: [30, 30, 0 , 0]}));
+frame.on("ready", function() {
+    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
+    var stage = frame.stage;
+    var stageW = frame.width;
+    var stageH = frame.height;
+
+    frame.asset("background.png").addTo();
+    var background = new Scroller(frame.asset("background.png").addTo(), .5);
+    var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
+    var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
+    var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
+
+    var unicorn = new Sprite({json:frame.asset("unicorn.json")})
+      .centerReg()
+
+    var dynamo = new Dynamo({sprite:"first.png", speed:5, reversible: false, flip:false});
+
+    var accelerator = new Accelerator([dynamo, background, stars, beam, clouds]);
+
+    var motionContoller = new MotionController({
+        target: accelerator,
+        type: "mousemove",
+    });
+
+    stage.update(); // this is needed to show any changes
+
+}); // end of ready
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
