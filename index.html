@@ -2,18 +2,19 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Rainbow Unicorn Game</title>
+<title>Rainbow Unicorn : Start Page</title>
 
 <script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
 <script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
 
 <script>
 
-var scaling = "fit";
+
+var scaling = "fit"; // this will resize to fit inside the screen dimensions
 var width = 1024;
 var height = 768;
-var color = light;
-var outerColor = dark;
+var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
+var outerColor = dark; // any HTML colors like "violet", "#333", etc. fine to use
 var assets = [
     "background.png",
     "beam.png",
@@ -39,23 +40,21 @@ frame.on("ready", function() {
     var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
 
     var container = new Container().center();
-    var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
 
-    var accelerator = new Accelerator([container, background, stars, beam, clouds]);
+    var unicorn = frame.asset("first.png").sca(.5).centerReg(container);
 
-    var motionContoller = new MotionController({
-        target: accelerator,
-        type: "mousemove",
-    });
+    var playBtn = new Button({
+      width: 200,
+      height: 100,
+      label: "PLAY",
+      target: "rainbow.html",
+      backgroundColor:pink,
+      rollBackgroundColor: purple,
+      color: moon
+    }).pos(512, 500).tap(function(){zgo("rainbow.html");});
 
-    //Angela's Emitter.
-    var emit =  new Emitter({
-       obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
-       random:{color:[blue, moon, pink,yellow]},
-       angle:{min:10, max:80},
-       force:1
-    }).center(unicorn).pos(440,410).rot(60)
-    .addTo(unicont).bot().sca(1.75);
+    var howBtn = new Button();
+
 
     stage.update(); // this is needed to show any changes
 
