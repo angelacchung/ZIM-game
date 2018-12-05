@@ -2,17 +2,18 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Rainbow Unicorn Game</title>
+<title>ZIM Frame - Fit Template</title>
 
 <script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
 <script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
 
 <script>
 
-var scaling = "fit";
+var scaling = "fit"; // this will resize to fit inside the screen dimensions
 var width = 1024;
 var height = 768;
-var color = light;
+var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
 var outerColor = dark;
 var assets = [
     "background.png",
@@ -22,9 +23,9 @@ var assets = [
     "second.png",
     "star.png",
     "stars.png"];
-var path= "assets/";
+var path = "assets/";
 
-var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter({backgroundColor: blue, corner: [30, 30, 0 , 0]}));
+var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
 frame.on("ready", function() {
     zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
 
@@ -41,21 +42,34 @@ frame.on("ready", function() {
     var container = new Container().center();
     var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
 
-    var accelerator = new Accelerator([container, background, stars, beam, clouds]);
-
-    var motionContoller = new MotionController({
-        target: accelerator,
-        type: "mousemove",
-    });
+    // var accelerator = new Accelerator([container, background, stars, beam, clouds]);
+    //
+    // //this was meant to accelerate the background based on unicorn movement.
+    // //unfortunately, I only know how to do this with a spritesheet.
+    // var unicornContoller = new MotionController({
+    //     target: accelerator,
+    //     type: "mousemove",
+    // });
 
     //Angela's Emitter.
     var emit =  new Emitter({
-       obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
-       random:{color:[blue, moon, pink,yellow]},
-       angle:{min:10, max:80},
-       force:1
+       obj: [star.sca(.09),new Rectangle(10), new Circle(10)],
+       random: {color:[blue, moon, pink,yellow]},
+       angle: {min:10, max:80},
+       force: 1
     }).center(unicorn).pos(440,410).rot(60)
-    .addTo(unicont).bot().sca(1.75);
+    .addTo(container).bot().sca(1.75);
+
+    //Angela's motion controller.
+    var mcontroller = new MotionController({
+      target:container,
+      type:"mousemove",
+      speed:100,
+      damp:.2,
+      minPercentSpeed:-6000,
+      maxPercentSpeed:6000
+    });
+
 
     stage.update(); // this is needed to show any changes
 
