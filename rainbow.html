@@ -38,7 +38,7 @@ frame.on("ready", function() {
     var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
     var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
     var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
-
+    var star = frame.asset("star.png")
     var container = new Container().center();
     var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
 
