@@ -22,7 +22,8 @@ var assets = [
     "first.png",
     "second.png",
     "star.png",
-    "stars.png"];
+    "stars.png",
+    "unicorn-distance.png"];
 var path = "assets/";
 
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
@@ -42,6 +43,15 @@ frame.on("ready", function() {
     var container = new Container().center();
     var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
 
+    var trackerbox = new Container().pos({x:stageW-700, y: stageH-100});
+    var tracker = frame.asset("unicorn-distance.png").sca(.15);
+    //var gameTimer = new Timer()
+    var runner = new Slider({
+      button: tracker,
+      barLength: 500,
+      barColor: pink
+    }).center(trackerbox);
+
     // var accelerator = new Accelerator([container, background, stars, beam, clouds]);
     //
     // //this was meant to accelerate the background based on unicorn movement.
@@ -54,7 +64,7 @@ frame.on("ready", function() {
     //Angela's Emitter.
     var emit =  new Emitter({
        obj: [star.sca(.09),new Rectangle(10), new Circle(10)],
-       random: {color:[blue, moon, pink,yellow]},
+       random: {color:[blue, moon, pink, yellow]},
        angle: {min:10, max:80},
        force: 1
     }).center(unicorn).pos(440,410).rot(60)
