@@ -14,48 +14,36 @@
 <!-- use zimjs.com/distill for minified individual functions! -->
 
 <script>
-
 // SCALING OPTIONS
 // scaling can have values as follows with full being the default
 // "fit"	sets canvas and stage to dimensions and scales to fit inside window size
 // "outside"	sets canvas and stage to dimensions and scales to fit outside window size
 // "full"	sets stage to window size with no scaling
 // "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
-
 var scaling = "fit"; // this will resize to fit inside the screen dimensions
 var width = 1024;
 var height = 768;
 var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
 var outerColor = dark;
-var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","stars.png","second.png","star.png","third.png"];
+var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","stars.png","second.png","star.png","third.png", "star-power.png"];
 var path = "assets/"
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
 frame.on("ready", function() {
     zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
-
     var stage = frame.stage;
     var stageW = frame.width;
     var stageH = frame.height;
-
 //the code for the distance tracker
-
-
-
 frame.asset("background.png").scaleTo(stage,100).addTo();
-
 var bottomClouds = frame.asset("bottom-clouds.png").center();
 var scrollerClouds = new Scroller(bottomClouds,.45);
-
 var stars = frame.asset("stars.png").center();
 var scrollerStars = new Scroller(stars,.25);
-
 var skyBeam = frame.asset("beam.png").center();
 var scrollerBeam = new Scroller(skyBeam,.95);
-
-var unicont = new Container().center().drag();
-
+var unicont = new Container().center();
+var starPower = frame.asset("star-power.png").center().sca(0.15).outline();
 var star = frame.asset("star.png")
-
 var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).outline();
 //ask dan how to stop the emitter from lagging behind when u click and drag the unicorn
 var emit =  new Emitter({
@@ -65,46 +53,18 @@ var emit =  new Emitter({
   force:1
 }).center(unicorn).pos(440,410).rot(60)
 .addTo(unicont).bot().sca(1.75);
-
 // var unicorn = frame.asset("second.png").centerReg(unicont);
 //The function for the unicorn to 'evolve'. A new variable for it must be made.
-
 unicorn.tap(function(){
   unicorn.removeFrom(unicont);
   // emit.removeFrom(unicont);
-  var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
-  // var emitg =  new Emitter({
-  //    obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
-  //    random:{color:[blue, moon, pink,yellow]},
-  //   angle:{min:10, max:80},
-  //   force:1
-  // }).center(unicorng).rot(60)
-  // .addTo(unicont).bot().sca(1.75);
+  var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).mov(72,-26);
+
   stage.update();
 })
-
-if(unicont)
-// function unicornBeam(){new Emitter({
-//   // obj:[new Rectangle(10).rot(105)],
-//   obj:[{
-//     type:"shape",
-//     s:[yellow,white], ss:10},star.sca(.09).rot(12)],
-//   // random:{color:[yellow,white]},
-//   wind:300,
-//   }).center(unicont).pos(650,10);
-// }
-// stage.on("stagemousedown", function (){
-//   new Emitter({
-//   // obj:[new Rectangle(10).rot(105)],
-//   obj:[{
-//     type:"shape",
-//     s:[yellow,white], ss:10},star.sca(.09).rot(12)],
-//   // random:{color:[yellow,white]},
-//   wind:300,
-//   }).center(unicont).pos(650,10);
-// });
+var circ = new Circle().center();
 var mcontroller = new MotionController({
-target:unicont,
+target:circ,
 type:"mousemove",
 speed:100,
 damp:.2,
@@ -112,64 +72,20 @@ minPercentSpeed:-6000,
 maxPercentSpeed:6000
 });
 ///testing hit and evolve
-// var rectangles = new Container(stageW, stageH).addTo();
-//
-//
-//
-// var colors = [pink, green, blue, purple, yellow, red, orange];
-//
-//
-//
-// var intervalID = interval(500, function () {
-//     // play sound
-//     var rect = new Rectangle(1, 50, shuffle(colors)[0])
-//         .reg(1)
-//         .pos(0, rand(stageH-50), true, false, rectangles);
-//
-//
-//
-//     rect.animate({
-//         props:{scaleX:stageW},
-//         time:1000,
-//         ease:"linear",
-//         call:function (unicorn) {
-//             rect.done = true;
-//         }
-//     });
-// rectangles.loop(function (rect){
-// if(rect.hitTestBounds(unicorn)){
-//   unicorn.removeFrom();
-// };});
+
+unicorn.on("mousemove", function() {
+   if (unicont.hitTestBounds(starPower))
+      stage.removeChild(starPower,zog("zogging"));
+      stage.update();
+   });
 
 
-// });
-// Ticker.add(function () {
-//     rectangles.loop(function (rect) {
-//         if (rect.done) {
-//             rect.removeFrom();
-//         } else if (rect.hitTestBounds(unicorn)) {
-//             rect.removeFrom();
-//             // play sound
-//             // change score
-//
-//             intervalID.clear();
-//             stopAnimate();
-//             motionController.enabled = false;
-//
-//
-//             frame.color = red;
-//             stage.update();
-//
-//         }
-//     }, true); // loop backwards
-// });
+
 
 
 
     stage.update(); // this is needed to show any changes
-
 }); // end of ready
-
 </script>
 
 <meta name="viewport" content="width=device-width, user-scalable=no" />
