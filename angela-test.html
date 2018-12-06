@@ -69,17 +69,17 @@ var emit =  new Emitter({
 // var unicorn = frame.asset("second.png").centerReg(unicont);
 //The function for the unicorn to 'evolve'. A new variable for it must be made.
 
-unicorn.on("click", function(){
+unicorn.tap(function(){
   unicorn.removeFrom(unicont);
-  emit.removeFrom(unicont);
+  // emit.removeFrom(unicont);
   var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
-  var emitg =  new Emitter({
-     obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
-     random:{color:[blue, moon, pink,yellow]},
-    angle:{min:10, max:80},
-    force:1
-  }).center(unicorng).rot(60)
-  .addTo(unicont).bot().sca(1.75);
+  // var emitg =  new Emitter({
+  //    obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
+  //    random:{color:[blue, moon, pink,yellow]},
+  //   angle:{min:10, max:80},
+  //   force:1
+  // }).center(unicorng).rot(60)
+  // .addTo(unicont).bot().sca(1.75);
   stage.update();
 })
 
