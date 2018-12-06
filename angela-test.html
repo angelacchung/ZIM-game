@@ -55,7 +55,7 @@ var emit =  new Emitter({
 .addTo(unicont).bot().sca(1.75);
 // var unicorn = frame.asset("second.png").centerReg(unicont);
 //The function for the unicorn to 'evolve'. For now, the unicorn evolves once you click it. But we want it so that
-//when it reaches a specific score, it will change automatically. 
+//when it reaches a specific score, it will change automatically.
 unicorn.tap(function(){
   unicorn.removeFrom(unicont);
   // emit.removeFrom(unicont);
@@ -69,6 +69,12 @@ unicorn.tap(function(){
   })
 })
 
+starPower.centerReg().sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
+// toggle pause the circle when stage is pressed
+stage.on("stagemousedown", function() {
+   circle.pauseAnimate(!circle.paused);
+   });
+//use animate function .animate() time = 2 seconds call: function (){put in the objname.removefromstage}
 
 var mcontroller = new MotionController({
 target:unicont,
@@ -85,6 +91,18 @@ stage.on("stagemousemove", function() {
       stage.removeChild(starPower,zog("zogging"));
       stage.update();
    });
+
+
+
+   // evolve = new Emitter({
+   //   obj:[star.sca(.03), new Circle(5)],
+   //   random:{color:[moon, pink, red]},
+   //
+   // }).center().animate({props:evolve, time:2000, call: function () {
+   //   evolve.removefromstage();
+   //   stage.update();
+   // }
+   // });
 
 
 
