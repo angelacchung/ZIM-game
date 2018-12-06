@@ -41,7 +41,7 @@ var stars = frame.asset("stars.png").center();
 var scrollerStars = new Scroller(stars,.25);
 var skyBeam = frame.asset("beam.png").center();
 var scrollerBeam = new Scroller(skyBeam,.95);
-var unicont = new Container().center();
+var unicont = new Container(120,50).centerReg().outline();
 var starPower = frame.asset("star-power.png").center().sca(0.15).outline();
 var star = frame.asset("star.png")
 var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).outline();
@@ -54,14 +54,21 @@ var emit =  new Emitter({
 }).center(unicorn).pos(440,410).rot(60)
 .addTo(unicont).bot().sca(1.75);
 // var unicorn = frame.asset("second.png").centerReg(unicont);
-//The function for the unicorn to 'evolve'. A new variable for it must be made.
+//The function for the unicorn to 'evolve'. For now, the unicorn evolves once you click it. But we want it so that
+//when it reaches a specific score, it will change automatically. 
 unicorn.tap(function(){
   unicorn.removeFrom(unicont);
   // emit.removeFrom(unicont);
-  var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).mov(72,-26);
-
+  var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
   stage.update();
+  unicorng.tap(function(){
+    unicorng.removeFrom(unicont);
+    // emit.removeFrom(unicont);
+    var unicorn3 = frame.asset("third.png").sca(.5).centerReg(unicont).outline();
+    stage.update();
+  })
 })
+
 
 var mcontroller = new MotionController({
 target:unicont,
@@ -74,7 +81,7 @@ maxPercentSpeed:6000
 
 ///unicorn hit test with star power
 stage.on("stagemousemove", function() {
-   if (unicorn.hitTestBounds(starPower))
+   if (unicont.hitTestBounds(starPower))
       stage.removeChild(starPower,zog("zogging"));
       stage.update();
    });
