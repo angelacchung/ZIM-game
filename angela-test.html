@@ -62,19 +62,20 @@ unicorn.tap(function(){
 
   stage.update();
 })
-var circ = new Circle().center();
+
 var mcontroller = new MotionController({
-target:circ,
+target:unicont,
 type:"mousemove",
 speed:100,
 damp:.2,
 minPercentSpeed:-6000,
 maxPercentSpeed:6000
 });
-///testing hit and evolve
 
-unicorn.on("mousemove", function() {
-   if (unicont.hitTestBounds(starPower))
+
+///unicorn hit test with star power
+stage.on("stagemousemove", function() {
+   if (unicorn.hitTestBounds(starPower))
       stage.removeChild(starPower,zog("zogging"));
       stage.update();
    });
