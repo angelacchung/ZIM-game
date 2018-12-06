@@ -23,7 +23,8 @@ var assets = [
     "second.png",
     "star.png",
     "stars.png",
-    "unicorn-distance.png"];
+    "unicorn-distance.png",
+    "unicorn-boss.png"];
 var path = "assets/";
 
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
@@ -39,27 +40,24 @@ frame.on("ready", function() {
     var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
     var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
     var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
+    var boss = frame.asset("unicorn-boss.png").pos(stageW-450, stageH-750);
     var star = frame.asset("star.png");
     var container = new Container().center();
     var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
 
+
     var trackerbox = new Container().pos({x:stageW-700, y: stageH-100});
     var tracker = frame.asset("unicorn-distance.png").sca(.15);
-    //var gameTimer = new Timer()
+
     var runner = new Slider({
+      min: 0,
+      max: 300,
       button: tracker,
       barLength: 500,
       barColor: pink
     }).center(trackerbox);
 
-    // var accelerator = new Accelerator([container, background, stars, beam, clouds]);
-    //
-    // //this was meant to accelerate the background based on unicorn movement.
-    // //unfortunately, I only know how to do this with a spritesheet.
-    // var unicornContoller = new MotionController({
-    //     target: accelerator,
-    //     type: "mousemove",
-    // });
+    //var gameTimer = Ticker.add(function(){runner.currentValue(+1)});
 
     //Angela's Emitter.
     var emit =  new Emitter({
