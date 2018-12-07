@@ -10,78 +10,97 @@
 
 <script>
 
-var scaling = "fit"; // this will resize to fit inside the screen dimensions
-var width = 1024;
-var height = 768;
-var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
-var outerColor = dark;
-var assets = [
-    "background.png",
-    "beam.png",
-    "bottom-clouds.png",
-    "first.png",
-    "second.png",
-    "star.png",
-    "stars.png",
-    "unicorn-distance.png",
-    "unicorn-boss.png"];
-var path = "assets/";
+    var scaling = "fit"; // this will resize to fit inside the screen dimensions
+    var width = 1024;
+    var height = 768;
+    var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
+    var outerColor = dark;
+    var assets = [
+        "background.png",
+        "beam.png",
+        "bottom-clouds.png",
+        "first.png",
+        "second.png",
+        "star.png",
+        "stars.png",
+        "unicorn-distance.png",
+        "unicorn-boss.png"];
+    var path = "assets/";
 
-var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
-frame.on("ready", function() {
-    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+    var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
+    frame.on("ready", function() {
+        zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
 
-    var stage = frame.stage;
-    var stageW = frame.width;
-    var stageH = frame.height;
+        var stage = frame.stage;
+        var stageW = frame.width;
+        var stageH = frame.height;
 
-    frame.asset("background.png").addTo();
-    var background = new Scroller(frame.asset("background.png").addTo(), .5);
-    var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
-    var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
-    var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
-    var boss = frame.asset("unicorn-boss.png").pos(stageW-450, stageH-750);
-    var star = frame.asset("star.png");
-    var container = new Container().center();
-    var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
+        frame.asset("background.png").addTo();
+        var background = new Scroller(frame.asset("background.png").addTo(), .5);
+        var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
+        var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
+        var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
+        var rect = new Rectangle(878, 677).pos(stageW-450, stageH-750).alp(0);
+        var boss = frame.asset("unicorn-boss.png").addTo(rect);//.pos(stageW-450, stageH-750).alp(.1);
+        var star = frame.asset("star.png");
+        var container = new Container().center();
+        var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
+        var trackerbox = new Container().pos({x:stageW-750, y: stageH-100});
+        var tracker = frame.asset("unicorn-distance.png").sca(.15);
 
+        var runner = new Slider({
+          min: 0,
+          max: 3000,
+          button: tracker,
+          barLength: 500,
+          barColor: pink
+        }).center(trackerbox);
 
-    var trackerbox = new Container().pos({x:stageW-700, y: stageH-100});
-    var tracker = frame.asset("unicorn-distance.png").sca(.15);
+        //var killslide = new Rectangle (600, 50).center(trackerbox).alp(0).outline();
 
-    var runner = new Slider({
-      min: 0,
-      max: 300,
-      button: tracker,
-      barLength: 500,
-      barColor: pink
-    }).center(trackerbox);
+        // var gameTimer = Ticker.add(function(){
+        //   runner.currentValue += 1;
+        // });
 
-    //var gameTimer = Ticker.add(function(){runner.currentValue(+1)});
+        // var timer = interval(5000 function () {
+        //   boss.animate({fade: [1, .1, .1]});
+        // });
 
-    //Angela's Emitter.
-    var emit =  new Emitter({
-       obj: [star.sca(.09),new Rectangle(10), new Circle(10)],
-       random: {color:[blue, moon, pink, yellow]},
-       angle: {min:10, max:80},
-       force: 1
-    }).center(unicorn).pos(440,410).rot(60)
-    .addTo(container).bot().sca(1.75);
+        // //when slider reaches 75% increase alpha of clouds and boss.
+        //     loop(function (runner = 1500) {
+        //         boss.alp(1);
+        //     })
 
-    //Angela's motion controller.
-    var mcontroller = new MotionController({
-      target:container,
-      type:"mousemove",
-      speed:100,
-      damp:.2,
-      minPercentSpeed:-6000,
-      maxPercentSpeed:6000
-    });
+        // boss.on(runner.currentValue(1500) function () {
+        //   alp += .1;
+        // });
 
 
-    stage.update(); // this is needed to show any changes
 
-}); // end of ready
+
+        //Angela's Emitter.
+        var emit =  new Emitter({
+           obj: [star.sca(.09),new Rectangle(10), new Circle(10)],
+           random: {color:[blue, moon, pink, yellow]},
+           angle: {min:10, max:80},
+           force: 1
+        }).center(unicorn).pos(440,410).rot(60)
+        .addTo(container).bot().sca(1.75);
+
+        //Angela's motion controller.
+        var mcontroller = new MotionController({
+          target:container,
+          type:"mousemove",
+          speed:100,
+          damp:.2,
+          minPercentSpeed:-6000,
+          maxPercentSpeed:6000
+        });
+
+
+        stage.update(); // this is needed to show any changes
+
+    }); // end of ready
 
 </script>
 
