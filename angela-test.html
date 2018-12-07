@@ -25,7 +25,7 @@ var width = 1024;
 var height = 768;
 var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
 var outerColor = dark;
-var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","stars.png","second.png","star.png","third.png", "star-power.png"];
+var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","stars.png","second.png","star.png","third.png", "star-power.png", "lightningorange1.png"];
 var path = "assets/"
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
 frame.on("ready", function() {
@@ -33,8 +33,9 @@ frame.on("ready", function() {
     var stage = frame.stage;
     var stageW = frame.width;
     var stageH = frame.height;
-//the code for the distance tracker
+
 frame.asset("background.png").scaleTo(stage,100).addTo();
+var lightningO1 = frame.asset("lightningorange1.png").sca(0.15).addTo();
 var bottomClouds = frame.asset("bottom-clouds.png").center();
 var scrollerClouds = new Scroller(bottomClouds,.45);
 var stars = frame.asset("stars.png").center();
@@ -45,37 +46,32 @@ var unicont = new Container(120,50).centerReg().outline();
 var starPower = frame.asset("star-power.png").center().sca(0.15).outline();
 var star = frame.asset("star.png")
 var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).outline();
-//ask dan how to stop the emitter from lagging behind when u click and drag the unicorn
+
+//emitter attached to the unicorn
 var emit =  new Emitter({
    obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
    random:{color:[blue, moon, pink,yellow]},
-  angle:{min:10, max:80},
-  force:1
+   angle:{min:10, max:80},
+   force:1
 }).center(unicorn).pos(440,410).rot(60)
 .addTo(unicont).bot().sca(1.75);
 // var unicorn = frame.asset("second.png").centerReg(unicont);
 //The function for the unicorn to 'evolve'. For now, the unicorn evolves once you click it. But we want it so that
-//when it reaches a specific score, it will change automatically.
+//when the score reaches 50 (first time it evolves) score 100(final evolution), it will change automatically.
 unicorn.tap(function(){
   unicorn.removeFrom(unicont);
-  // emit.removeFrom(unicont);
   var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
   stage.update();
   unicorng.tap(function(){
     unicorng.removeFrom(unicont);
-    // emit.removeFrom(unicont);
     var unicorn3 = frame.asset("third.png").sca(.5).centerReg(unicont).outline();
     stage.update();
   })
 })
 
 starPower.centerReg().pos(60,60).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
-// toggle pause the circle when stage is pressed
-// stage.on("stagemousedown", function() {
-//    circle.pauseAnimate(!circle.paused);
-//    });
-//use animate function .animate() time = 2 seconds call: function (){put in the objname.removefromstage}
 
+//motion controller for the unicorn container.
 var mcontroller = new MotionController({
 target:unicont,
 type:"mousemove",
@@ -84,32 +80,38 @@ damp:.2,
 minPercentSpeed:-6000,
 maxPercentSpeed:6000
 });
-
-///unicorn hit test with star power
+//scores. When the unicorn container hits the starPower, the score increases by 10.
+var count = 0;
+var scoreCont = new Container(100,30).centerReg(stage).outline().pos(860,30);
+var score = new Label({text:count,color:white}).addTo(scoreCont).center().mov(0,50);
+var scoreLabel = new Label({
+  text:"YOUR SCORE",
+  size:20,
+  font:"arial",
+  color:moon,
+  backgroundColor:pink,
+  corner:10
+}).addTo(scoreCont).center();
+//When the unicorn container hits the starPower, the score increases by 10.
 stage.on("stagemousemove", function() {
-   if (unicont.hitTestBounds(starPower))
-      stage.removeChild(starPower,zog("zogging"));
+   if (unicont.hitTestBounds(starPower)){
+      zog("zogging");
+      stage.removeChild(starPower);
+      count+=10;
+      score.text=count;
       stage.update();
-   });
+    }
+});
+//score
 
-
-
-   // evolve = new Emitter({
-   //   obj:[star.sca(.03), new Circle(5)],
-   //   random:{color:[moon, pink, red]},
-   //
-   // }).center().animate({props:evolve, time:2000, call: function () {
-   //   evolve.removefromstage();
-   //   stage.update();
-   // }
-   // });
+//hearts assets
 
 
 
 
 
 
-    stage.update(); // this is needed to show any changes
+stage.update(); // this is needed to show any changes
 }); // end of ready
 </script>
 
