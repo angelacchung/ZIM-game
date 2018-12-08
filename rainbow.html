@@ -35,7 +35,9 @@
         "lightningyellow1.png",
         "lightningyellow2.png",
         "lightningyellow3.png",
-        "star-power.png"];
+        "star-power.png",
+        "friend.png",
+        "heart.png"];
     var path = "assets/";
 
     var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
@@ -129,22 +131,42 @@
         var damp = new Damp( null, .3);
         damp.immediate(unicorn.x);
 
-        var speed = 10;
+        var speed = 5;
             function animate(){
-              loop(stars, function(starPower){
-                starPower.x-=speed;
-                if (unicorn.hitTestBounds(starPower)){
+              loop(stars, function(powerup){
+                powerup.x-=speed;
+                if (unicorn.hitTestBounds(powerup)){
                   //unicorn point increase
-
+                  stage.removeChild(starPower);
+                  count+=10;
+                  score.text=count;
+                  stage.update();
                 }
               }, true);
               loop(lightning, function(bolt){
                 bolt.x-=speed;
                 if (unicorn.hitTestBounds(bolt)){
                   //unicorn health decrease
+                  stage.removeChild(bolt);
+                  heartCont.removeChild(heart1);
+                  score.text=count;
+                  stage.update();
                 }
               }, true);
           }
+
+          //scores. When the unicorn container hits the starPower, the score increases by 10.
+          var count = 0;
+          var scoreCont = new Container(100,30).centerReg(stage).pos(860,30);
+          var score = new Label({text:count,color:white}).addTo(scoreCont).center().mov(0,50);
+          var scoreLabel = new Label({
+            text:"YOUR SCORE",
+            size:20,
+            font:"arial",
+            color:moon,
+            backgroundColor:pink,
+            corner:10
+          }).addTo(scoreCont).center();
 
         //Angela's Emitter.
         var emit =  new Emitter({
@@ -164,6 +186,14 @@
           minPercentSpeed:-6000,
           maxPercentSpeed:6000
         });
+
+        //hearts assets. from right to left: heart 1 heart 2 heart 3
+        var heartCont = new Container(100,30).centerReg();
+        var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont)
+        var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont)
+        var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont)
+        heartCont.pos(100,50);
+
 
 
         stage.update(); // this is needed to show any changes
