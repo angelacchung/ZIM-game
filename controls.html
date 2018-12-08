@@ -43,27 +43,20 @@ frame.on("ready", function() {
 
     var container = new Container().center();
 
-
-
-
-
-
-
 //control instructions go here.
 
-var instructions = frame.asset("instructions.png").sca(1).centerReg(container);
+    var instructions = frame.asset("instructions.png").sca(1).centerReg(container);
 
 
-
-var backBtn = new Button({
-  width: 200,
-  height: 75,
-  label: "BACK",
-  target: "index.html",
-  backgroundColor:pink,
-  rollBackgroundColor: purple,
-  color: moon
-}).pos(425, 600).tap(function(){zgo("index.html");});
+    var backBtn = new Button({
+      width: 200,
+      height: 75,
+      label: "BACK",
+      target: "index.html",
+      backgroundColor:pink,
+      rollBackgroundColor: purple,
+      color: moon
+    }).pos(425, 600).tap(function(){zgo("index.html");});
 
 
     stage.update(); // this is needed to show any changes

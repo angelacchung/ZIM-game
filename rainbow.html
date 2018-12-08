@@ -25,7 +25,17 @@
         "stars.png",
         "unicorn-distance.png",
         "unicorn-boss.png",
-        "atmospheric.mp3"];
+        "atmospheric.mp3",
+        "lightningorange1.png",
+        "lightningorange2.png",
+        "lightningorange3.png",
+        "lightningred1.png",
+        "lightningred2.png",
+        "lightningred3.png",
+        "lightningyellow1.png",
+        "lightningyellow2.png",
+        "lightningyellow3.png",
+        "star-power.png"];
     var path = "assets/";
 
     var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
@@ -45,10 +55,21 @@
         var rect = new Rectangle(878, 677).pos(stageW-450, stageH-750).alp(0);
         var boss = frame.asset("unicorn-boss.png").addTo(rect);//.pos(stageW-450, stageH-750).alp(.1);
         var star = frame.asset("star.png");
-        var container = new Container().center();
-        var unicorn = frame.asset("first.png").sca(.5).centerReg(container).drag();
+        var unicont = new Container().center();
+        var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).drag();
         var trackerbox = new Container().pos({x:stageW-750, y: stageH-100});
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
+
+        var starPower = frame.asset("star-power.png")
+          .sca(0.15)
+          .outline()
+          .animate({
+            props:{scale:0.18},
+            time:500,
+            loop:true,
+            rewind:true,
+            from:true
+          });
 
         var runner = new Slider({
           min: 0,
@@ -58,27 +79,72 @@
           barColor: pink
         }).center(trackerbox);
 
-        //var killslide = new Rectangle (600, 50).center(trackerbox).alp(0).outline();
+        stage.on("stagemousemove", startGame, null, true); // only once
+        	function startGame() {
+            Ticker.add(animate);
+            dropLightning();
+            dropStars();
+          }
 
-        // var gameTimer = Ticker.add(function(){
-        //   runner.currentValue += 1;
-        // });
+    //Function to drop the stars
+        var stars = new Container();
+        stage.addChild(stars);
 
-        // var timer = interval(5000 function () {
-        //   boss.animate({fade: [1, .1, .1]});
-        // });
+        function dropStars(){
+          interval({min:200, max:1200}, function(){
+            var powerup = starPower.clone();
+            powerup
+              .reg(powerup.width/2, powerup.height)
+              .loc(rand(powerup.height, stage.height-powerup.height), -10)
+              .addTo(stars);
+          });
+        }
 
-        // //when slider reaches 75% increase alpha of clouds and boss.
-        //     loop(function (runner = 1500) {
-        //         boss.alp(1);
-        //     })
+    //function to drop the bolts
+        var lightning = new Container();
+        stage.addChild(lightning);
 
-        // boss.on(runner.currentValue(1500) function () {
-        //   alp += .1;
-        // });
+        function dropLightning(){
+          interval({min:200, max:1200}, function(){
+            var bolts = [
+              frame.asset("lightningorange1.png"),
+              frame.asset("lightningorange2.png"),
+              frame.asset("lightningorange3.png"),
+              frame.asset("lightningred1.png"),
+              frame.asset("lightningred2.png"),
+              frame.asset("lightningred3.png"),
+              frame.asset("lightningyellow1.png"),
+              frame.asset("lightningyellow2.png"),
+              frame.asset("lightningyellow3.png")
+            ];
 
+            var bolt = bolts[rand(bolts.length-1)].sca(.15).clone();
+            bolt
+              .reg(bolt.width/2, bolt.height)
+              .loc(rand(bolt.height, stage.height-bolt.height), -10)
+              .addTo(lightning);
+          });
+        }
 
+        var damp = new Damp( null, .3);
+        damp.immediate(unicorn.x);
 
+        var speed = 10;
+            function animate(){
+              loop(stars, function(starPower){
+                starPower.x-=speed;
+                if (unicorn.hitTestBounds(starPower)){
+                  //unicorn point increase
+
+                }
+              }, true);
+              loop(lightning, function(bolt){
+                bolt.x-=speed;
+                if (unicorn.hitTestBounds(bolt)){
+                  //unicorn health decrease
+                }
+              }, true);
+          }
 
         //Angela's Emitter.
         var emit =  new Emitter({
@@ -87,11 +153,11 @@
            angle: {min:10, max:80},
            force: 1
         }).center(unicorn).pos(440,410).rot(60)
-        .addTo(container).bot().sca(1.75);
+        .addTo(unicont).bot().sca(1.75);
 
         //Angela's motion controller.
         var mcontroller = new MotionController({
-          target:container,
+          target:unicont,
           type:"mousemove",
           speed:100,
           damp:.2,
