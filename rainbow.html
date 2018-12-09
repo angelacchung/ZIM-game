@@ -21,6 +21,7 @@
         "bottom-clouds.png",
         "first.png",
         "second.png",
+        "third.png",
         "star.png",
         "stars.png",
         "unicorn-distance.png",
@@ -51,6 +52,8 @@
 
         frame.asset("background.png").addTo();
         // frame.loadAssets(["atmospheric.mp3"], "assets/").play({volume:.5}); // attempt to load music
+        var unicornb = frame.asset("third.png")
+        var unicorng = frame.asset("second.png")
         var background = new Scroller(frame.asset("background.png").addTo(), .5);
         var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
         var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
@@ -59,12 +62,22 @@
         var boss = frame.asset("unicorn-boss.png").addTo(rect);//.pos(stageW-450, stageH-750).alp(.1);
         var star = frame.asset("star.png");
         var trackend = frame.asset("boss-distance.png").sca(.10);
-        var unicont = new Container().center();
-        var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).drag();
+        var unicont = new Container(120,50).centerReg();
+        var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont);
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
 
-
-
+        // stage.on("stagemousemove", function() {
+        //    if (count === 10){
+        //      unicorn.removeFrom(unicont);
+        //      var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont);
+        //      stage.update();
+        //         if( count === 20){
+        //         unicorng.removeFrom(unicont);
+        //         var unicornb = frame.asset("third.png").sca(.5).centerReg(unicont)
+        //         stage.update();
+        //         }
+        //       }
+        //     });
         var starPower = frame.asset("star-power.png")
           .sca(0.15)
           .outline()
@@ -120,11 +133,12 @@
           });
         }
 
+
     //function to drop the bolts
         var lightning = new Container(stageW, stageH).center();
 
         function dropLightning(){
-          interval({min:200, max:5000}, function(){
+          interval({min:500, max:800}, function(){
             var bolts = [
               frame.asset("lightningorange1.png"),
               frame.asset("lightningorange2.png"),
@@ -146,21 +160,33 @@
           });
         }
 
-        var speed = 5;
+        var speed = 20;
             function animate(){
                 loop(stars, function(powerup){
                   powerup.x-=speed;
-                  if (unicorn.hitTestRect(powerup)){
+                  if (unicont.hitTestRect(powerup)){
                     //unicorn point increase
                     stars.removeChild(powerup);
                     count+=10;
                     score.text=count;
-                    stage.update();
-                  }
+                    if (count == 10){
+                      evolve();
+                      unicorn.removeFrom(unicont);
+                      unicorng.sca(.5).centerReg(unicont);
+                      stage.update()
+                      }
+
+                    if(count == 20){
+                      evolve();
+                       unicorng.removeFrom(unicont);
+                       unicornb.sca(.5).centerReg(unicont)
+                       stage.update();
+                     }
+                    }
                 }, true);
                 loop(lightning, function(bolt){
                   bolt.x-=speed;
-                  if (unicorn.hitTestRect(bolt)){
+                  if (unicont.hitTestRect(bolt)){
                     //unicorn health decrease
                     lightning.removeChild(bolt);
                     heartCont.removeChild(heart1);
@@ -169,6 +195,8 @@
                   }
                 }, true);
             }
+
+
 
           //scores. When the unicorn container hits the starPower, the score increases by 10.
           var count = 0;
@@ -219,8 +247,7 @@
             }).centerReg().mov(90,-60).addTo(unicont);
         }
 
-        stage.on("click", beam);
-
+        // stage.on("click", beam);
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
@@ -229,8 +256,17 @@
         var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont)
         heartCont.pos(100,50);
 
-
-
+        //explosion for when the unicorn evolves
+        function evolve(){
+        var emit =  new Emitter({
+           obj:[star.sca(.09),new Rectangle(10,10), new Circle(10)],
+           random:{color:[blue, moon, pink,yellow]},
+           num:10,
+           force:10,
+            })
+            .centerReg(unicont)
+            emit.spurt({time:500});
+          };
         stage.update(); // this is needed to show any changes
 
     }); // end of ready
