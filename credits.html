@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Rainbow Unicorn : Controls</title>
+<title>Rainbow Unicorn : Credits</title>
 
 <script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
 <script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
@@ -23,7 +23,7 @@ var assets = [
     "second.png",
     "star.png",
     "stars.png",
-    "instructions.png"];
+    "credits.png"];
 var path= "assets/";
 
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter({backgroundColor: blue, corner: [30, 30, 0 , 0]}));
@@ -43,9 +43,9 @@ frame.on("ready", function() {
 
     var container = new Container().center();
 
-//control instructions go here.
+//credits go here.
 
-    var instructions = frame.asset("instructions.png").sca(1).centerReg(container);
+    var credits = frame.asset("credits.png").sca(1).centerReg(container);
 
 
     var backBtn = new Button({
