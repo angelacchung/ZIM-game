@@ -89,25 +89,23 @@
           }
 
     //Function to drop the stars
-        var stars = new Container();
-        stage.addChild(stars);
+        var stars = new Container(stageW, stageH).center();
 
         function dropStars(){
-          interval({min:200, max:1200}, function(){
+          interval({min:1500, max:2000}, function(){
             var powerup = starPower.clone();
             powerup
               .reg(powerup.width/2, powerup.height)
-              .loc(rand(powerup.height, stage.height-powerup.height), -10)
+              .loc(rand(stage.width-powerup.width), -10)
               .addTo(stars);
           });
         }
 
     //function to drop the bolts
-        var lightning = new Container();
-        stage.addChild(lightning);
+        var lightning = new Container(stageW, stageH).center();
 
         function dropLightning(){
-          interval({min:200, max:1200}, function(){
+          interval({min:1500, max:2000}, function(){
             var bolts = [
               frame.asset("lightningorange1.png"),
               frame.asset("lightningorange2.png"),
@@ -123,37 +121,35 @@
             var bolt = bolts[rand(bolts.length-1)].sca(.15).clone();
             bolt
               .reg(bolt.width/2, bolt.height)
-              .loc(rand(bolt.height, stage.height-bolt.height), -10)
+              .rot(90)
+              .loc(rand(stage.width-bolt.width), -10)
               .addTo(lightning);
           });
         }
 
-        var damp = new Damp( null, .3);
-        damp.immediate(unicorn.x);
-
-        var speed = 5;
+        var speed = 2;
             function animate(){
-              loop(stars, function(powerup){
-                powerup.x-=speed;
-                if (unicorn.hitTestBounds(powerup)){
-                  //unicorn point increase
-                  stage.removeChild(starPower);
-                  count+=10;
-                  score.text=count;
-                  stage.update();
-                }
-              }, true);
-              loop(lightning, function(bolt){
-                bolt.x-=speed;
-                if (unicorn.hitTestBounds(bolt)){
-                  //unicorn health decrease
-                  stage.removeChild(bolt);
-                  heartCont.removeChild(heart1);
-                  score.text=count;
-                  stage.update();
-                }
-              }, true);
-          }
+                loop(stars, function(powerup){
+                  powerup.x-=speed;
+                  if (unicorn.hitTestBounds(powerup)){
+                    //unicorn point increase
+                    stage.removeChild(powerup);
+                    count+=10;
+                    score.text=count;
+                    stage.update();
+                  }
+                }, true);
+                loop(lightning, function(bolt){
+                  bolt.x-=speed;
+                  if (unicorn.hitTestBounds(bolt)){
+                    //unicorn health decrease
+                    stage.removeChild(bolt);
+                    heartCont.removeChild(heart1);
+                    score.text=count;
+                    stage.update();
+                  }
+                }, true);
+            }
 
           //scores. When the unicorn container hits the starPower, the score increases by 10.
           var count = 0;
