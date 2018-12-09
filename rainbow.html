@@ -37,7 +37,8 @@
         "lightningyellow3.png",
         "star-power.png",
         "friend.png",
-        "heart.png"];
+        "heart.png",
+        "boss-distance.png"];
     var path = "assets/";
 
     var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
@@ -59,8 +60,9 @@
         var star = frame.asset("star.png");
         var unicont = new Container().center();
         var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).drag();
-        var trackerbox = new Container().pos({x:stageW-750, y: stageH-100});
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
+        var trackend = frame.asset("boss-distance.png").sca(.10);
+
 
         var starPower = frame.asset("star-power.png")
           .sca(0.15)
@@ -73,26 +75,42 @@
             from:true
           });
 
-        var runner = new Slider({
-          min: 0,
-          max: 3000,
-          button: tracker,
-          barLength: 500,
-          barColor: pink
-        }).center(trackerbox);
+        // var runner = new Slider({
+        //   min: 0,
+        //   max: 3000,
+        //   button: tracker,
+        //   barLength: 500,
+        //   barColor: pink
+        // }).center(trackerbox);
 
         stage.on("stagemousemove", startGame, null, true); // only once
         	function startGame() {
             Ticker.add(animate);
             dropLightning();
             dropStars();
+            gameTracker();
           }
+
+    //function for game tracker.
+        var trackerbox = new Container().centerReg();
+        trackerbox.pos(275, stageH-50);
+        var runnerbar = new Rectangle({width: 500, height:3, color: pink}).addTo(trackerbox);
+        tracker.addTo(trackerbox);
+        trackend.addTo(trackerbox);
+
+
+        function gameTracker(){
+          interval(5000, function() {
+            var runner = tracker;
+            runner.x += 1;
+          });
+        }
 
     //Function to drop the stars
         var stars = new Container(stageW, stageH).center();
 
         function dropStars(){
-          interval({min:1500, max:2000}, function(){
+          interval({min:1500, max:5000}, function(){
             var powerup = starPower.clone();
             powerup
               .reg(powerup.width/2, powerup.height)
@@ -105,7 +123,7 @@
         var lightning = new Container(stageW, stageH).center();
 
         function dropLightning(){
-          interval({min:1500, max:2000}, function(){
+          interval({min:1500, max:7000}, function(){
             var bolts = [
               frame.asset("lightningorange1.png"),
               frame.asset("lightningorange2.png"),
@@ -182,6 +200,21 @@
           minPercentSpeed:-6000,
           maxPercentSpeed:6000
         });
+
+        //beam for the unicorn's attack.
+        var star2 = frame.asset("star.png")
+        var beam = new Emitter({obj:
+              [star2.sca(0.10).rot(20),
+              new Circle(10),
+              new Rectangle(10,10),
+              new Rectangle(10,80).rot(90),
+              {type:"shape", s:[blue,"pink"], ss:15}
+              ],
+              random:{color:[yellow, orange, moon]},
+              force:2,
+              wind:200,
+              num:2
+        }).centerReg().mov(90,-60).addTo(unicont);
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
