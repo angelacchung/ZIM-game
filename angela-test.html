@@ -71,7 +71,7 @@ unicorn.tap(function(){
 var lightning1 = frame.asset("lightningorange1.png")
 starPower.centerReg().pos(60,60).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
 lightning1.centerReg().pos(60,60).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
-//motion controller for the unicorn container.
+// motion controller for the unicorn container.
 var mcontroller = new MotionController({
 target:unicont,
 type:"mousemove",
@@ -132,8 +132,20 @@ var runner = new Slider({
   barColor: pink
 }).center(trackerbox);
 
-
-
+//beam for the unicorn's attack.
+var star2 = frame.asset("star.png")
+var beam = new Emitter({obj:
+      [star2.sca(0.10).rot(20),
+      new Circle(10),
+      new Rectangle(10,10),
+      new Rectangle(10,80).rot(90),
+      {type:"shape", s:[blue,"pink"], ss:15}
+      ],
+      random:{color:[yellow, orange, moon]},
+      force:2,
+      wind:200,
+      num:2
+}).centerReg().mov(90,-60).addTo(unicont);
 
 
 
