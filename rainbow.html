@@ -124,7 +124,7 @@
         var stars = new Container(stageW, stageH).center();
 
         function dropStars(){
-          interval({min:1500, max:5000}, function(){
+          interval({min:500, max:5000}, function(){
             var powerup = starPower.clone();
             powerup
               .reg(powerup.width/2, powerup.height)
@@ -137,7 +137,7 @@
         var lightning = new Container(stageW, stageH).center();
 
         function dropLightning(){
-          interval({min:1500, max:7000}, function(){
+          interval({min:200, max:5000}, function(){
             var bolts = [
               frame.asset("lightningorange1.png"),
               frame.asset("lightningorange2.png"),
@@ -150,7 +150,7 @@
               frame.asset("lightningyellow3.png")
             ];
 
-            var bolt = bolts[rand(bolts.length-1)].sca(.15).clone();
+            var bolt = bolts[rand(bolts.length-1)].sca(.25).clone();
             bolt
               .rot(90)
               .reg(bolt.width/2, bolt.height)
@@ -159,13 +159,13 @@
           });
         }
 
-        var speed = 2;
+        var speed = 5;
             function animate(){
                 loop(stars, function(powerup){
                   powerup.x-=speed;
                   if (unicorn.hitTestRect(powerup)){
                     //unicorn point increase
-                    stage.removeChild(powerup);
+                    stars.removeChild(powerup);
                     count+=10;
                     score.text=count;
                     stage.update();
@@ -175,7 +175,7 @@
                   bolt.x-=speed;
                   if (unicorn.hitTestRect(bolt)){
                     //unicorn health decrease
-                    stage.removeChild(bolt);
+                    lightning.removeChild(bolt);
                     heartCont.removeChild(heart1);
                     score.text=count;
                     stage.update();
@@ -216,19 +216,24 @@
         });
 
         //beam for the unicorn's attack.
-        var star2 = frame.asset("star.png")
-        var beam = new Emitter({obj:
-              [star2.sca(0.10).rot(20),
-              new Circle(10),
-              new Rectangle(10,10),
-              new Rectangle(10,80).rot(90),
-              {type:"shape", s:[blue,"pink"], ss:15}
-              ],
-              random:{color:[yellow, orange, moon]},
-              force:2,
-              wind:200,
-              num:2
-        }).centerReg().mov(90,-60).addTo(unicont);
+        function beam(){
+            var star2 = frame.asset("star.png")
+            var beam = new Emitter({obj:
+                  [star2.sca(0.10).rot(20),
+                  new Circle(10),
+                  new Rectangle(10,10),
+                  new Rectangle(10,80).rot(90),
+                  {type:"shape", s:[blue,"pink"], ss:15}
+                  ],
+                  random:{color:[yellow, orange, moon]},
+                  force:2,
+                  wind:200,
+                  num:2
+            }).centerReg().mov(90,-60).addTo(unicont);
+        }
+
+        stage.on("click", beam);
+
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
