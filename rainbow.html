@@ -58,10 +58,11 @@
         var rect = new Rectangle(878, 677).pos(stageW-450, stageH-750).alp(0);
         var boss = frame.asset("unicorn-boss.png").addTo(rect);//.pos(stageW-450, stageH-750).alp(.1);
         var star = frame.asset("star.png");
+        var trackend = frame.asset("boss-distance.png").sca(.10);
         var unicont = new Container().center();
         var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).drag();
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
-        var trackend = frame.asset("boss-distance.png").sca(.10);
+
 
 
         var starPower = frame.asset("star-power.png")
@@ -92,15 +93,15 @@
           }
 
     //function for game tracker.
+
         var trackerbox = new Container().centerReg();
         trackerbox.pos(275, stageH-50);
         var runnerbar = new Rectangle({width: 500, height:3, color: pink}).addTo(trackerbox);
-        tracker.addTo(trackerbox);
-        trackend.addTo(trackerbox);
-
+        tracker.addTo(trackerbox).mov(-20,-20);
+        trackend.addTo(trackerbox).mov(450,-30);
 
         function gameTracker(){
-          interval(5000, function() {
+          interval(300, function() {
             var runner = tracker;
             runner.x += 1;
           });
