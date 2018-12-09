@@ -59,7 +59,7 @@
         var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
         var clouds = new Scroller(frame.asset("bottom-clouds.png").addTo(), .75);
         var rect = new Rectangle(878, 677).pos(stageW-450, stageH-750).alp(0);
-        var boss = frame.asset("unicorn-boss.png").addTo(rect);//.pos(stageW-450, stageH-750).alp(.1);
+        var boss = frame.asset("unicorn-boss.png")//.pos(stageW-450, stageH-750).alp(.1);
         var star = frame.asset("star.png");
         var trackend = frame.asset("boss-distance.png").sca(.10);
         var unicont = new Container(120,50).centerReg();
@@ -196,8 +196,6 @@
                 }, true);
             }
 
-
-
           //scores. When the unicorn container hits the starPower, the score increases by 10.
           var count = 0;
           var scoreCont = new Container(100,30).centerReg(stage).pos(860,30);
@@ -246,8 +244,7 @@
                   num:2
             }).centerReg().mov(90,-60).addTo(unicont);
         }
-
-        // stage.on("click", beam);
+        // stage.on("click", beam());
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
@@ -267,8 +264,11 @@
             .centerReg(unicont)
             emit.spurt({time:500});
           };
-        stage.update(); // this is needed to show any changes
 
+        //make the boss appear
+        boss.center().mov(430,0).sca(.90);
+
+      stage.update(); // this is needed to show any changes
     }); // end of ready
 
 </script>
