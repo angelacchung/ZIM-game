@@ -65,6 +65,16 @@ frame.on("ready", function() {
       color: moon
     }).pos(425, 600).tap(function(){zgo("controls.html");});
 
+    var howBtn = new Button({
+      width: 200,
+      height: 75,
+      label: "CREDITS",
+      target: "credits.html",
+      backgroundColor:pink,
+      rollBackgroundColor: purple,
+      color: moon
+    }).pos(425, 700).tap(function(){zgo("credits.html");});
+
 
     stage.update(); // this is needed to show any changes
 
