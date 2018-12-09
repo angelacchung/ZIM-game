@@ -96,7 +96,7 @@
             var powerup = starPower.clone();
             powerup
               .reg(powerup.width/2, powerup.height)
-              .loc(rand(stage.width-powerup.width), -10)
+              .loc(stageW+50, rand(stage.height-powerup.width))
               .addTo(stars);
           });
         }
@@ -120,9 +120,9 @@
 
             var bolt = bolts[rand(bolts.length-1)].sca(.15).clone();
             bolt
-              .reg(bolt.width/2, bolt.height)
               .rot(90)
-              .loc(rand(stage.width-bolt.width), -10)
+              .reg(bolt.width/2, bolt.height)
+              .loc(stageW+50, rand(stage.height-bolt.width))
               .addTo(lightning);
           });
         }
@@ -131,7 +131,7 @@
             function animate(){
                 loop(stars, function(powerup){
                   powerup.x-=speed;
-                  if (unicorn.hitTestBounds(powerup)){
+                  if (unicorn.hitTestRect(powerup)){
                     //unicorn point increase
                     stage.removeChild(powerup);
                     count+=10;
@@ -141,7 +141,7 @@
                 }, true);
                 loop(lightning, function(bolt){
                   bolt.x-=speed;
-                  if (unicorn.hitTestBounds(bolt)){
+                  if (unicorn.hitTestRect(bolt)){
                     //unicorn health decrease
                     stage.removeChild(bolt);
                     heartCont.removeChild(heart1);
