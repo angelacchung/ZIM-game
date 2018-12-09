@@ -41,6 +41,11 @@
         "boss-distance.png"];
     var path = "assets/";
 
+ //    frame.loadAssets([
+ //   "atmospheric.mp3"
+ // ]);
+
+
     var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
     frame.on("ready", function() {
         zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
@@ -50,7 +55,15 @@
         var stageH = frame.height;
 
         frame.asset("background.png").addTo();
+        frame.asset("atmospheric.mp3").play({volume:.5});
+
+
+        // previous attemps to add music
         // frame.loadAssets(["atmospheric.mp3"], "assets/").play({volume:.5}); // attempt to load music
+        // frame.loadAssets(["atmospheric.mp3"], "assets/");
+        // var atmosphericS = frame.asset("atmospheric.mp3");
+        // atmosphericS.play({loop:-1, volume:0});
+
         var background = new Scroller(frame.asset("background.png").addTo(), .5);
         var stars = new Scroller(frame.asset("stars.png").addTo(), .15);
         var beam = new Scroller(frame.asset("beam.png").addTo(), .30);
