@@ -64,7 +64,7 @@
         var rect = new Rectangle(878, 677).pos(stageW-450, stageH-750).alp(0);
         var boss = frame.asset("unicorn-boss.png")//.pos(stageW-450, stageH-750).alp(.1);
         var star = frame.asset("star.png");
-        var trackend = frame.asset("boss-distance.png").sca(.10);
+        // var trackend = frame.asset("boss-distance.png").sca(.10);
         var unicont = new Container(120,50).centerReg();
         var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont);
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
@@ -101,6 +101,7 @@
             dropStars();
             gameTracker();
           }
+        var trackend = frame.asset("boss-distance.png").sca(.10);
 
     //function for game tracker.
         var trackerbox = new Container().centerReg();
@@ -112,7 +113,9 @@
         function gameTracker(){
           interval(300, function() {
             var runner = tracker;
-            runner.x += 1;
+            if (runner.x <= 445){
+              runner.x += 1;
+            }
           });
         }
 
@@ -164,7 +167,7 @@
                     //unicorn point increase
                     stars.removeChild(powerup);
                     frame.asset("collectstar.mp3").play({volume:1.1});
-                    count+=10;
+                    count+=5;
                     score.text=count;
                     if (count == 50){
                       evolve();
@@ -187,8 +190,9 @@
                     //unicorn health decrease
                     lightning.removeChild(bolt);
                     heartCont.removeChildAt(0);
-                    frame.asset("electricshock.mp3").play({volume:1});
+                    count-=5;
                     score.text=count;
+                    frame.asset("electricshock.mp3").play({volume:1});
                     stage.update();
                   }
                 }, true);
