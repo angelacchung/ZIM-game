@@ -166,19 +166,23 @@
                     frame.asset("collectstar.mp3").play({volume:1.1});
                     count+=10;
                     score.text=count;
-                    if (count == 50){
+                    if (count == 10){
                       evolve();
                       unicorn.removeFrom(unicont);
                       unicorng.sca(.5).centerReg(unicont);
                       stage.update()
                       }
 
-                    if(count == 100){
+                    if(count == 20){
                       evolve();
                        unicorng.removeFrom(unicont);
                        unicornb.sca(.5).centerReg(unicont)
                        stage.update();
                      }
+                     if (count ==30){
+                        friendAppear(endGame())
+                     }
+                     stage.update();
                     }
                 }, true);
                 loop(lightning, function(bolt){
@@ -227,6 +231,7 @@
         });
 
         //beam for the unicorn's attack.
+
         function beam(){
             var star2 = frame.asset("star.png")
             var beam = new Emitter({obj:
@@ -279,6 +284,8 @@
           }
         //friend appears
         // friendAppear();
+
+
         function friendAppear(){
           friend.center().sca(.35).mov(500,180)
           .animate({
