@@ -26,7 +26,7 @@ var height = 768;
 var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
 var outerColor = dark;
 var assets = ["background.png", "first.png","beam.png","bottom-clouds.png","stars.png","second.png","star.png","third.png", "star-power.png", "lightningorange1.png", "unicorn-distance.png",
-"friend.png","heart.png","boss-distance.png"];
+"friend.png","heart.png","boss-distance.png","atmospheric.mp3"];
 var path = "assets/"
 var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
 frame.on("ready", function() {
@@ -36,18 +36,63 @@ frame.on("ready", function() {
     var stageH = frame.height;
 
 frame.asset("background.png").scaleTo(stage,100).addTo();
-
 var bottomClouds = frame.asset("bottom-clouds.png").center();
 var scrollerClouds = new Scroller(bottomClouds,.45);
 var stars = frame.asset("stars.png").center();
 var scrollerStars = new Scroller(stars,.25);
 var skyBeam = frame.asset("beam.png").center();
+var music = frame.asset("atmospheric.mp3");
 var scrollerBeam = new Scroller(skyBeam,.95);
 var unicont = new Container(120,50).centerReg();
-var starPower = frame.asset("star-power.png")
+var starPower = frame.asset("star-power.png");
+var starPower2 = frame.asset("star-power.png");
 var star = frame.asset("star.png")
 var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont).outline();
+var friend = frame.asset("friend.png").center().sca(.35).mov(500,180);
 //emitter attached to the unicorn
+var heartCont = new Container(100,30).centerReg();
+var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont)
+var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont)
+var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont)
+heartCont.pos(100,50);
+heart1.test = true;
+heart2.test = false;
+heart3.test = false;
+
+var speed = 2;
+    function animate(){
+        loop(stars, function(powerup){
+          powerup.x-=speed;
+          if (unicorn.hitTestRect(powerup)){
+            //unicorn point increase
+            stage.removeChild(powerup);
+            count+=10;
+            score.text=count;
+            stage.update();
+          }
+        }, true);
+        loop(lightning, function(bolt){
+          bolt.x-=speed;
+          if (unicorn.hitTestRect(bolt)){
+            //unicorn health decrease
+            lightning.removeChild(bolt);
+            if(heart1.test==true){
+            heartCont.removeChild(heart1)
+            heart2.test=true;
+            }
+            else if(heart2.test==true){
+              heart2.removeFrom()
+              heart3.test=true;
+            }
+            // score.text=count;
+            stage.update();
+          }
+        }, true);
+    }
+
+
+
+
 var emit =  new Emitter({
    obj:[star.sca(.09),new Rectangle(10), new Circle(10)],
    random:{color:[blue, moon, pink,yellow]},
@@ -58,18 +103,20 @@ var emit =  new Emitter({
 // var unicorn = frame.asset("second.png").centerReg(unicont);
 //The function for the unicorn to 'evolve'. For now, the unicorn evolves once you click it. But we want it so that
 //when the score reaches 50 (first time it evolves) score 100(final evolution), it will change automatically.
-unicorn.tap(function(){
-  unicorn.removeFrom(unicont);
-  var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
-  stage.update();
-  unicorng.tap(function(){
-    unicorng.removeFrom(unicont);
-    var unicorn3 = frame.asset("third.png").sca(.5).centerReg(unicont).outline();
-    stage.update();
-  })
-})
+// unicorn.tap(function(){
+//   if(count == 10){
+//   unicorn.removeFrom(unicont);
+//   var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
+//   stage.update()}});
+//   unicorng.tap(function(){
+//     unicorng.removeFrom(unicont);
+//     var unicorn3 = frame.asset("third.png").sca(.5).centerReg(unicont).outline();
+//     stage.update();
+//   })
+// })
 var lightning1 = frame.asset("lightningorange1.png")
 starPower.centerReg().pos(60,60).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
+starPower2.center().pos(40,40).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
 lightning1.centerReg().pos(60,60).sca(0.15).outline().animate({props:{scale:0.18}, time:500, loop:true, rewind:true, from:true});
 // motion controller for the unicorn container.
 var mcontroller = new MotionController({
@@ -92,7 +139,7 @@ var scoreLabel = new Label({
   backgroundColor:pink,
   corner:10
 }).addTo(scoreCont).center();
-//When the unicorn container hits the starPower, the score increases by 10.
+//When the unicorn container hits the starPower, the score increases by 10. If the score is 10(change this number later) the unicorn will evolve
 stage.on("stagemousemove", function() {
    if (unicont.hitTestBounds(starPower)){
       zog("zogging");
@@ -100,8 +147,13 @@ stage.on("stagemousemove", function() {
       count+=10;
       score.text=count;
       stage.update();
+        if(count == 10){
+          unicorn.removeFrom(unicont);
+          var unicorng = frame.asset("second.png").sca(.5).centerReg(unicont).outline();
+          stage.update()};
     }
 });
+
 
 stage.on("stagemousemove", function() {
    if (unicont.hitTestBounds(lightning1)){
