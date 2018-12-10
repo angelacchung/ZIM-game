@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Rainbow Unicorn : Play Game</title>
+<title>ZIM Frame - Fit Template</title>
 
 <script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
 <script src="https://d309knd7es5f10.cloudfront.net/zim_9.3.0.js"></script>
@@ -27,8 +27,6 @@
         "unicorn-distance.png",
         "unicorn-boss.png",
         "atmospheric.mp3",
-        "electricshock.mp3",
-        "collectstar.mp3",
         "lightningorange1.png",
         "lightningorange2.png",
         "lightningorange3.png",
@@ -44,11 +42,6 @@
         "boss-distance.png"];
     var path = "assets/";
 
- //    frame.loadAssets([
- //   "atmospheric.mp3"
- // ]);
-
-
     var frame = new Frame(scaling, width, height, color, outerColor, assets, path, new Waiter());
     frame.on("ready", function() {
         zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
@@ -58,10 +51,7 @@
         var stageH = frame.height;
 
         frame.asset("background.png").addTo();
-        frame.asset("atmospheric.mp3").play({volume:.5});
-
-
-
+        // frame.loadAssets(["atmospheric.mp3"], "assets/").play({volume:.5}); // attempt to load music
         var unicornb = frame.asset("third.png")
         var unicorng = frame.asset("second.png")
         var background = new Scroller(frame.asset("background.png").addTo(), .5);
@@ -75,7 +65,7 @@
         var unicont = new Container(120,50).centerReg();
         var unicorn = frame.asset("first.png").sca(.5).centerReg(unicont);
         var tracker = frame.asset("unicorn-distance.png").sca(.15);
-
+        var friend = frame.asset("friend.png")
         // stage.on("stagemousemove", function() {
         //    if (count === 10){
         //      unicorn.removeFrom(unicont);
@@ -177,7 +167,6 @@
                   if (unicont.hitTestRect(powerup)){
                     //unicorn point increase
                     stars.removeChild(powerup);
-                    frame.asset("collectstar.mp3").play({volume:1.1});
                     count+=10;
                     score.text=count;
                     if (count == 10){
@@ -201,7 +190,6 @@
                     //unicorn health decrease
                     lightning.removeChild(bolt);
                     heartCont.removeChild(heart1);
-                    frame.asset("electricshock.mp3").play({volume:1});
                     score.text=count;
                     stage.update();
                   }
@@ -278,9 +266,41 @@
           };
 
         //make the boss appear
-        boss.center().mov(430,0).sca(.90);
+        bossAppear();
 
-      stage.update(); // this is needed to show any changes
+        function bossAppear(){
+        boss.center().mov(530,0).sca(.90)
+        .animate({
+          props:{x:1300, y:0},
+          time:1500,
+          loop:false,
+          rewind:false,
+          from:true,
+          sequence:500
+          });
+          }
+        //friend appears
+        friendAppear();
+        function friendAppear(){
+          friend.center().sca(.35).mov(500,180).alp(100)
+          .animate({
+            props:{fade:1},
+            time:500,
+            loop:false,
+            rewind:false,
+            from:true,
+            sequence:500
+          });
+          // var fo = new Emitter({
+          //   obj:[new Circle(20,40)],
+          //   random:{color:[pink,"purple"]},
+          //   num:30,
+          //   force:4
+          // }).sca(1.3).centerReg().mov(300,-20);
+          // fo.spurt({time:3000});
+        };
+
+    stage.update(); // this is needed to show any changes
     }); // end of ready
 
 </script>
