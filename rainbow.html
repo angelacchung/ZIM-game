@@ -265,8 +265,7 @@
           };
 
         //make the boss appear
-        bossAppear();
-
+        // bossAppear();
         function bossAppear(){
         boss.center().mov(530,0).sca(.90)
         .animate({
@@ -279,7 +278,7 @@
           });
           }
         //friend appears
-        friendAppear();
+        // friendAppear();
         function friendAppear(){
           friend.center().sca(.35).mov(500,180)
           .animate({
@@ -319,7 +318,7 @@
     });
     }
     //lose game + restart
-    loseGame();
+    // loseGame();
     function loseGame(){
       var youLose = new Label({
         text:"You werent able to save your friend...",
