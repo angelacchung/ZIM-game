@@ -299,7 +299,7 @@
           fo.spurt({time:2000});
         };
     //end game screen
-    endGame();
+    // endGame();
     function endGame(){
     var youWon = new Label({
     text:"Congratulations! You saved your friend!",
@@ -318,6 +318,44 @@
     sequence:500
     });
     }
+    //lose game + restart
+    loseGame();
+    function loseGame(){
+      var youLose = new Label({
+        text:"You werent able to save your friend...",
+        size:20,
+        font:"arial",
+        color:moon,
+        backgroundColor:null,
+      }).center()
+      .animate({
+        props:{alpha:0},
+        time:3000,
+        loop:false,
+        rewind:false,
+        from:true,
+        sequence:500
+      }).mov(0,-70);
+    var restart = new Button({
+      width: 200,
+      height: 75,
+      label: "RESTART",
+      target: "index.html",
+      backgroundColor:pink,
+      rollBackgroundColor: purple,
+      color: moon
+    }).center()
+    .animate({
+      props:{alpha:0},
+      time:3000,
+      loop:false,
+      rewind:false,
+      from:true,
+      sequence:500
+    })
+.tap(function(){zgo("rainbow.html");})
+    }
+
     stage.update(); // this is needed to show any changes
     }); // end of ready
 
