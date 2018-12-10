@@ -27,6 +27,8 @@
         "unicorn-distance.png",
         "unicorn-boss.png",
         "atmospheric.mp3",
+        "electricshock.mp3",
+        "collectstar.mp3",
         "lightningorange1.png",
         "lightningorange2.png",
         "lightningorange3.png",
@@ -51,6 +53,7 @@
         var stageH = frame.height;
 
         frame.asset("background.png").addTo();
+        frame.asset("atmospheric.mp3").play({volume:.5, loop});
         // frame.loadAssets(["atmospheric.mp3"], "assets/").play({volume:.5}); // attempt to load music
         var unicornb = frame.asset("third.png")
         var unicorng = frame.asset("second.png")
@@ -160,6 +163,7 @@
                   if (unicont.hitTestRect(powerup)){
                     //unicorn point increase
                     stars.removeChild(powerup);
+                    frame.asset("collectstar.mp3").play({volume:1.1});
                     count+=10;
                     score.text=count;
                     if (count == 50){
