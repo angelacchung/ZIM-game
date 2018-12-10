@@ -169,20 +169,20 @@
                     frame.asset("collectstar.mp3").play({volume:1.1});
                     count+=5;
                     score.text=count;
-                    if (count == 10){
+                    if (count == 25){
                       evolve();
                       unicorn.removeFrom(unicont);
                       unicorng.sca(.5).centerReg(unicont);
                       stage.update()
                       }
 
-                    if(count == 20){
+                    if(count == 60){
                       evolve();
                        unicorng.removeFrom(unicont);
                        unicornb.sca(.5).centerReg(unicont)
                        stage.update();
                      }
-                     if (count ==30){
+                     if (count ==100){
                         friendAppear(endGame())
                      }
                      stage.update();
