@@ -51,7 +51,14 @@
         var stageH = frame.height;
 
         frame.asset("background.png").addTo();
+<<<<<<< HEAD
         // frame.loadAssets(["atmospheric.mp3"], "assets/").play({volume:.5}); // attempt to load music
+=======
+        frame.asset("atmospheric.mp3").play({volume:.5, loop});
+
+
+
+>>>>>>> 26b1c5bf6aa75847d249ba3f9c3e1dc09f8afda0
         var unicornb = frame.asset("third.png")
         var unicorng = frame.asset("second.png")
         var background = new Scroller(frame.asset("background.png").addTo(), .5);
@@ -160,7 +167,7 @@
           });
         }
 
-        var speed = 20;
+        var speed = 15;
             function animate(){
                 loop(stars, function(powerup){
                   powerup.x-=speed;
@@ -169,14 +176,14 @@
                     stars.removeChild(powerup);
                     count+=10;
                     score.text=count;
-                    if (count == 10){
+                    if (count == 50){
                       evolve();
                       unicorn.removeFrom(unicont);
                       unicorng.sca(.5).centerReg(unicont);
                       stage.update()
                       }
 
-                    if(count == 20){
+                    if(count == 100){
                       evolve();
                        unicorng.removeFrom(unicont);
                        unicornb.sca(.5).centerReg(unicont)
@@ -248,9 +255,9 @@
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
-        var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont)
-        var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont)
-        var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont)
+        var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont);
+        var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont);
+        var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont);
         heartCont.pos(100,50);
 
         //explosion for when the unicorn evolves
