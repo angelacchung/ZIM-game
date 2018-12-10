@@ -88,6 +88,7 @@
         //         }
         //       }
         //     });
+
         var starPower = frame.asset("star-power.png")
           .sca(0.15)
           .outline()
@@ -99,14 +100,7 @@
             from:true
           });
 
-        // var runner = new Slider({
-        //   min: 0,
-        //   max: 3000,
-        //   button: tracker,
-        //   barLength: 500,
-        //   barColor: pink
-        // }).center(trackerbox);
-
+    //startgame w/ mouse move.
         stage.on("stagemousemove", startGame, null, true); // only once
         	function startGame() {
             Ticker.add(animate);
@@ -116,7 +110,6 @@
           }
 
     //function for game tracker.
-
         var trackerbox = new Container().centerReg();
         trackerbox.pos(275, stageH-50);
         var runnerbar = new Rectangle({width: 500, height:3, color: pink}).addTo(trackerbox);
@@ -170,7 +163,7 @@
           });
         }
 
-        var speed = 15;
+        var speed = 10;
             function animate(){
                 loop(stars, function(powerup){
                   powerup.x-=speed;
@@ -200,7 +193,7 @@
                   if (unicont.hitTestRect(bolt)){
                     //unicorn health decrease
                     lightning.removeChild(bolt);
-                    heartCont.removeChild(heart1);
+                    heartCont.removeChildAt(0);
                     frame.asset("electricshock.mp3").play({volume:1});
                     score.text=count;
                     stage.update();
@@ -253,16 +246,17 @@
                   random:{color:[yellow, orange, moon]},
                   force:2,
                   wind:200,
-                  num:2
+                  num:2,
+                  startPaused: true
             }).centerReg().mov(90,-60).addTo(unicont);
+            beam.on("click", startPaused(true))
         }
-        // stage.on("click", beam());
 
         //hearts assets. from right to left: heart 1 heart 2 heart 3
         var heartCont = new Container(100,30).centerReg();
-        var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont);
-        var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont);
-        var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont);
+        var heart1 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(70,0).addTo(heartCont, 0);
+        var heart2 = new Sprite(frame.asset("heart.png")).sca(0.09).centerReg().addTo(heartCont, 1);
+        var heart3 = new Sprite (frame.asset("heart.png")).sca(0.09).centerReg().mov(-70,0).addTo(heartCont, 2);
         heartCont.pos(100,50);
 
         //explosion for when the unicorn evolves
